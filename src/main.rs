@@ -1,3 +1,7 @@
-mod cli;
+use bc_unshit::cli::ArgumentParser;
 
-fn main() {}
+fn main() {
+    let args = ArgumentParser::arguments();
+
+    dbg!(args);
+}

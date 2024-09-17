@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::Parser;
 
 use super::cli_utils;
@@ -8,20 +10,21 @@ use super::cli_utils;
 pub struct ArgumentParser {
     /// Path to the downloaded album (should be unzipped).
     #[arg(short, long, value_parser = cli_utils::parse_tilde)]
-    source: String,
+    source: PathBuf,
 
     /// Path to the destination directory.
     #[arg(short, long, value_parser = cli_utils::parse_tilde)]
-    destination: String,
+    destination: PathBuf,
 
     /// Should the source folder be deleted.
     #[arg(short, long)]
     remove_source: bool,
 }
 
+#[derive(Debug)]
 pub struct Arguments {
-    pub source: String,
-    pub destination: String,
+    pub source: PathBuf,
+    pub destination: PathBuf,
 }
 
 impl ArgumentParser {
