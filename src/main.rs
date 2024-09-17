@@ -1,7 +1,9 @@
-use bc_unshit::cli::ArgumentParser;
+use bc_unshit::{cli::ArgumentParser, utils::copy_dir};
 
-fn main() {
+fn main() -> Result<(), String> {
     let args = ArgumentParser::arguments();
 
-    dbg!(args);
+    copy_dir(args.source, args.destination)?;
+
+    Ok(())
 }

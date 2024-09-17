@@ -25,6 +25,7 @@ pub struct ArgumentParser {
 pub struct Arguments {
     pub source: PathBuf,
     pub destination: PathBuf,
+    pub remove_source: bool,
 }
 
 impl ArgumentParser {
@@ -34,6 +35,7 @@ impl ArgumentParser {
         Arguments {
             source: args.source,
             destination: args.destination,
+            remove_source: args.remove_source,
         }
     }
 }
