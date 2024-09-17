@@ -1,9 +1,11 @@
-use bc_unshit::{cli::ArgumentParser, utils::copy_dir};
+use bc_unshit::{cli::ArgumentParser, Unshitter};
 
 fn main() -> Result<(), String> {
     let args = ArgumentParser::arguments();
 
-    copy_dir(args.source, args.destination)?;
+    let unshitter = Unshitter::new(args.source, args.destination, args.remove_source);
+
+    unshitter.go()?;
 
     Ok(())
 }

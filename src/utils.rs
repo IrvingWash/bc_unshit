@@ -1,22 +1,35 @@
-use std::{fs, path::PathBuf};
+use std::{
+    error::Error,
+    ffi::OsString,
+    fs,
+    path::{Path, PathBuf},
+};
 
-pub fn copy_dir(source: PathBuf, destination: PathBuf) -> Result<(), String> {
-    if !fs::exists(&destination).map_err(|e| e.to_string())? {
-        fs::create_dir_all(&destination).map_err(|e| e.to_string())?;
-    };
-
-    let dir = fs::read_dir(source).map_err(|e| e.to_string())?;
-
-    for entry in dir {
-        let entry = entry.map_err(|e| e.to_string())?;
-
-        if !entry.file_type().map_err(|e| e.to_string())?.is_dir() {
-            fs::copy(entry.path(), destination.join(entry.file_name()))
-                .map_err(|e| e.to_string())?;
-        } else {
-            copy_dir(entry.path(), destination.join(entry.file_name()))?;
-        }
+pub fn create_dir_if_not_exists(path: &PathBuf) -> Result<(), String> {
+    if !fs::exists(path).map_err(error_to_string)? {
+        fs::create_dir_all(path).map_err(error_to_string)?;
     }
 
     Ok(())
+}
+
+pub fn is_same_extension(filename: OsString, expected_ext: &str) -> bool {
+    if let Some(ext) = Path::new(&filename).extension() {
+        return match ext.to_str() {
+            None => false,
+            Some(ext) => ext == expected_ext,
+        };
+    }
+
+    false
+}
+
+pub fn remove_dir(path: &PathBuf) -> Result<(), String> {
+    fs::remove_dir_all(path).map_err(error_to_string)?;
+
+    Ok(())
+}
+
+pub fn error_to_string(e: impl Error) -> String {
+    e.to_string()
 }

@@ -1,2 +1,6 @@
+pub use unshitter::Unshitter;
+
 pub mod cli;
-pub mod utils;
+mod unshitter;
+
+mod utils;
