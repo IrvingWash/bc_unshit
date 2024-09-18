@@ -1,5 +1,7 @@
 # bandcamp unshittifier
 
+![Crates.io Version](https://img.shields.io/crates/v/bc_unshit)
+
 This app takes a path to an album downloaded from [bandcamp](https://bandcamp.com) and changes it structure and renames the files.
 
 Typical bandcamp album structure:
