@@ -1,11 +1,11 @@
 use std::{
-    fs::{self, DirEntry},
+    fs::DirEntry,
     path::{Path, PathBuf},
 };
 
 use id3::{Tag, TagLike};
 
-use crate::utils;
+use crate::utils::{self, is_directory};
 
 const MP3_EXTENSION: &str = "mp3";
 
@@ -35,14 +35,14 @@ impl Unshitter {
     }
 
     fn find_album_metainfo(path: &PathBuf) -> Result<Option<(String, String, String)>, String> {
-        let dir = fs::read_dir(path).map_err(utils::error_to_string)?;
+        let dir = utils::read_directory(path)?;
 
         let mut sub_dirs: Vec<DirEntry> = Vec::new();
 
         for entry in dir {
             let entry = entry.map_err(utils::error_to_string)?;
 
-            if entry.file_type().map_err(utils::error_to_string)?.is_dir() {
+            if utils::is_directory(&entry)? {
                 sub_dirs.push(entry);
 
                 continue;
@@ -74,7 +74,7 @@ impl Unshitter {
     }
 
     fn move_and_unshit(source: &PathBuf, destination: &Path) -> Result<(), String> {
-        let dir = fs::read_dir(source).map_err(utils::error_to_string)?;
+        let dir = utils::read_directory(source)?;
 
         let (artist_name, album_name, year) = Unshitter::find_album_metainfo(source)?.unwrap_or((
             String::from(""),
@@ -92,7 +92,7 @@ impl Unshitter {
             let entry = entry.map_err(utils::error_to_string)?;
 
             // Recursively handle a directory
-            if entry.file_type().map_err(utils::error_to_string)?.is_dir() {
+            if is_directory(&entry)? {
                 Unshitter::move_and_unshit(&entry.path(), &destination.join(entry.path()))?;
 
                 continue;
@@ -100,8 +100,7 @@ impl Unshitter {
 
             // Handle a non-mp3 file
             if !utils::is_same_extension(entry.file_name(), MP3_EXTENSION) {
-                fs::copy(entry.path(), destination.join(entry.file_name()))
-                    .map_err(utils::error_to_string)?;
+                utils::copy_file(&entry.path(), &destination.join(entry.file_name()))?;
 
                 continue;
             }
@@ -110,15 +109,14 @@ impl Unshitter {
             let tags = Tag::read_from_path(entry.path()).map_err(utils::error_to_string)?;
 
             if let (Some(track_number), Some(title)) = (tags.track(), tags.title()) {
-                fs::copy(
-                    entry.path(),
-                    destination.join(format!(
+                utils::copy_file(
+                    &entry.path(),
+                    &destination.join(format!(
                         "{}. {}.mp3",
                         track_number,
                         title.replace('\0', "-")
                     )),
-                )
-                .map_err(utils::error_to_string)?;
+                )?;
             };
         }
 

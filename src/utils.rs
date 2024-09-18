@@ -1,7 +1,7 @@
 use std::{
     error::Error,
     ffi::OsString,
-    fs,
+    fs::{self, DirEntry, ReadDir},
     path::{Path, PathBuf},
 };
 
@@ -32,4 +32,18 @@ pub fn remove_dir(path: &PathBuf) -> Result<(), String> {
 
 pub fn error_to_string(e: impl Error) -> String {
     e.to_string()
+}
+
+pub fn read_directory(path: &PathBuf) -> Result<ReadDir, String> {
+    fs::read_dir(path).map_err(error_to_string)
+}
+
+pub fn is_directory(entry: &DirEntry) -> Result<bool, String> {
+    Ok(entry.file_type().map_err(error_to_string)?.is_dir())
+}
+
+pub fn copy_file(from: &PathBuf, to: &PathBuf) -> Result<(), String> {
+    fs::copy(from, to).map_err(error_to_string)?;
+
+    Ok(())
 }
