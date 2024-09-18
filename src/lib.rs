@@ -1,6 +1,6 @@
 pub use unshitter::Unshitter;
 
 pub mod cli;
-mod unshitter;
 
+mod unshitter;
 mod utils;

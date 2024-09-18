@@ -2,6 +2,14 @@
 name = "bc_unshit"
 version = "0.1.0"
 edition = "2021"
+publish = true
+description = "Bandcamp album structure unshittifier"
+homepage = "https://github.com/IrvingWash/bc_unshit"
+repository = "https://github.com/IrvingWash/bc_unshit.git"
+readme = "README.md"
+documentation = "https://github.com/IrvingWash/bc_unshit"
+license = "MIT"
+authors = ["WI"]
 
 [dependencies]
 clap = { version = "4.5.17", features = ["derive"] }

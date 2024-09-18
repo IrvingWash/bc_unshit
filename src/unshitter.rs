@@ -25,7 +25,7 @@ impl Unshitter {
     }
 
     pub fn go(&self) -> Result<(), String> {
-        Unshitter::rename_songs(&self.album_path, &self.destination_path)?;
+        Unshitter::move_and_unshit(&self.album_path, &self.destination_path)?;
 
         if self.should_clean {
             utils::remove_dir(&self.album_path)?
@@ -34,7 +34,7 @@ impl Unshitter {
         Ok(())
     }
 
-    fn find_artist_name(path: &PathBuf) -> Result<Option<(String, String, String)>, String> {
+    fn find_album_metainfo(path: &PathBuf) -> Result<Option<(String, String, String)>, String> {
         let dir = fs::read_dir(path).map_err(utils::error_to_string)?;
 
         let mut sub_dirs: Vec<DirEntry> = Vec::new();
@@ -65,18 +65,18 @@ impl Unshitter {
         }
 
         for sub_dir in sub_dirs {
-            if let Some(artist) = Unshitter::find_artist_name(&sub_dir.path())? {
-                return Ok(Some(artist));
+            if let Some(metainfo) = Unshitter::find_album_metainfo(&sub_dir.path())? {
+                return Ok(Some(metainfo));
             }
         }
 
         Ok(None)
     }
 
-    fn rename_songs(source: &PathBuf, destination: &Path) -> Result<(), String> {
+    fn move_and_unshit(source: &PathBuf, destination: &Path) -> Result<(), String> {
         let dir = fs::read_dir(source).map_err(utils::error_to_string)?;
 
-        let (artist_name, album_name, year) = Unshitter::find_artist_name(source)?.unwrap_or((
+        let (artist_name, album_name, year) = Unshitter::find_album_metainfo(source)?.unwrap_or((
             String::from(""),
             String::from(""),
             String::from(""),
@@ -93,7 +93,7 @@ impl Unshitter {
 
             // Recursively handle a directory
             if entry.file_type().map_err(utils::error_to_string)?.is_dir() {
-                Unshitter::rename_songs(&entry.path(), &destination.join(entry.path()))?;
+                Unshitter::move_and_unshit(&entry.path(), &destination.join(entry.path()))?;
 
                 continue;
             }
