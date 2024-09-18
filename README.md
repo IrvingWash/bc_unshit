@@ -33,3 +33,8 @@ And behold the beauty:
     ├── cover.png
 ```
 Run `bc_unshit --help` to learn more.
+
+## Installation
+```
+cargo install bc_unshit
+```
