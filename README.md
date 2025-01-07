@@ -2,8 +2,15 @@
 
 ![Crates.io Version](https://img.shields.io/crates/v/bc_unshit)
 
+
 This app takes a path to an album downloaded from [bandcamp](https://bandcamp.com) and changes it structure and renames the files.
 
+# Contents
+- [What it does](#how-it-works)<br>
+- [Installation](#installation)<br>
+- [Command-line Options](#command-line-options)<br>
+
+## How it works
 Typical bandcamp album structure:
 ```
 ~/Downloads
@@ -39,4 +46,13 @@ Run `bc_unshit --help` to learn more.
 ## Installation
 ```
 cargo install bc_unshit
+```
+
+## Command-line options
+```bash
+-s, --source <SOURCE>            # Path to the downloaded album (should be unzipped)
+-d, --destination <DESTINATION>  # Path to the destination directory
+-r, --remove-source              # Should the source folder be deleted
+-h, --help                       # Print help
+-V, --version                    # Print version
 ```
