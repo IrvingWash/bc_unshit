@@ -9,6 +9,7 @@ This app takes a path to an album downloaded from [bandcamp](https://bandcamp.co
 - [What it does](#how-it-works)<br>
 - [Installation](#installation)<br>
 - [Command-line Options](#command-line-options)<br>
+- [Additional links](#additional-links)<br>
 
 ## How it works
 Typical bandcamp album structure:
@@ -56,3 +57,6 @@ cargo install bc_unshit
 -h, --help                       # Print help
 -V, --version                    # Print version
 ```
+
+## Additional links
+[Check out my bandcamp downloader](https://github.com/IrvingWash/arsene)
