@@ -109,6 +109,12 @@ impl Unshitter {
             let tags = Tag::read_from_path(entry.path()).map_err(utils::error_to_string)?;
 
             if let (Some(track_number), Some(title)) = (tags.track(), tags.title()) {
+                let track_number = if track_number > 9 {
+                    format!("0{}", track_number)
+                } else {
+                    track_number.to_string()
+                };
+
                 utils::copy_file(
                     &entry.path(),
                     &destination.join(format!(
