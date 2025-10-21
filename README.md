@@ -3,7 +3,7 @@
 ![Crates.io Version](https://img.shields.io/crates/v/bc_unshit)
 
 
-This app takes a path to an album downloaded from [bandcamp](https://bandcamp.com) and changes it structure and renames the files.
+This app takes a path to an album downloaded from [bandcamp](https://bandcamp.com) and changes it's structure and renames the files.
 
 # Contents
 - [What it does](#how-it-works)<br>
