@@ -1,7 +1,6 @@
 # bandcamp unshittifier
 
-![Crates.io Version](https://img.shields.io/crates/v/bc_unshit)
-
+# Deprecated. But I've got a new one: [badcomp](https://github.com/IrvingWash/badcomp)
 
 This app takes a path to an album downloaded from [bandcamp](https://bandcamp.com) and changes it's structure and renames the files.
 
